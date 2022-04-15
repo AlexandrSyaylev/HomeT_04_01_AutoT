@@ -32,5 +32,8 @@ public class CardDeliveryTest {
         $(byText("Забронировать")).click();
         Configuration.timeout = 15000;
         $(withText("Успешно!")).shouldBe(visible);
+        $(byText("Встреча успешно забронирована на")).shouldBe(visible);
+
     }
+
 }
