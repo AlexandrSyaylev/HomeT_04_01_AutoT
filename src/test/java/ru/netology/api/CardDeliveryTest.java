@@ -6,26 +6,48 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
+import java.text.*;
 import java.time.Duration;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selectors.withText;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class CardDeliveryTest {
+    String currentFormatDate;
+    //java.util.Date date = new Date();
+    //String currentDate = date.toString();
+    GregorianCalendar date = new GregorianCalendar();
+    DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy") {
+        /*@Override
+        public StringBuffer format(Date date, StringBuffer toAppendTo, FieldPosition fieldPosition) {
+            return null;
+        }*/
 
+        /*@Override
+        public Date parse(String source, ParsePosition pos) {
+            return null;
+        }*/
+    };
 
     @Test
-    public void ShouldSubmitRequest() {
+    public void ShouldSubmitRequest() throws ParseException {
+        date.roll(Calendar.DATE,3);
+        String dateMeetin = dateFormat.format(date.getTime());
+        System.out.println(dateMeetin);
         open("http://localhost:9999/");
         SelenideElement form = $("form[enctype='application/x-www-form-urlencoded']");
         $("input[placeholder='Город']").setValue("Архангельск");
-        $("input.input__control[placeholder='Дата встречи']").setValue("19.04.2022");
+        $("input.input__control[placeholder='Дата встречи']").setValue(dateMeetin);
         $("input[name='name']").setValue("Валенков Алеша");
         $("input[name='phone']").setValue("+79008006600");
         $("label[data-test-id='agreement']").click();
@@ -33,6 +55,7 @@ public class CardDeliveryTest {
         Configuration.timeout = 15000;
         $(withText("Успешно!")).shouldBe(visible);
         $(byText("Встреча успешно забронирована на")).shouldBe(visible);
+        $(byText(dateMeetin)).shouldBe(visible);
 
     }
 
