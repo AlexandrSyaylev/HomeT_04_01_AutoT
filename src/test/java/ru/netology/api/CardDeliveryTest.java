@@ -20,6 +20,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.*;
+import static java.awt.SystemColor.menu;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class CardDeliveryTest {
@@ -47,6 +48,8 @@ public class CardDeliveryTest {
         open("http://localhost:9999/");
         SelenideElement form = $("form[enctype='application/x-www-form-urlencoded']");
         $("input[placeholder='Город']").setValue("Архангельск");
+        $("input.input__control[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.SHIFT,Keys.HOME));
+        $("input.input__control[placeholder='Дата встречи']").sendKeys(Keys.BACK_SPACE);;
         $("input.input__control[placeholder='Дата встречи']").setValue(dateMeetin);
         $("input[name='name']").setValue("Валенков Алеша");
         $("input[name='phone']").setValue("+79008006600");
