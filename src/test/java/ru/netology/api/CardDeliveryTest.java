@@ -24,32 +24,19 @@ import static java.awt.SystemColor.menu;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class CardDeliveryTest {
-    String currentFormatDate;
-    //java.util.Date date = new Date();
-    //String currentDate = date.toString();
     GregorianCalendar date = new GregorianCalendar();
-    DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy") {
-        /*@Override
-        public StringBuffer format(Date date, StringBuffer toAppendTo, FieldPosition fieldPosition) {
-            return null;
-        }*/
-
-        /*@Override
-        public Date parse(String source, ParsePosition pos) {
-            return null;
-        }*/
-    };
+    DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     @Test
-    public void ShouldSubmitRequest() throws ParseException {
-        date.roll(Calendar.DATE,3);
+    public void ShouldSubmitRequest() {
+        date.roll(Calendar.DATE, 3);
         String dateMeetin = dateFormat.format(date.getTime());
         System.out.println(dateMeetin);
         open("http://localhost:9999/");
         SelenideElement form = $("form[enctype='application/x-www-form-urlencoded']");
         $("input[placeholder='Город']").setValue("Архангельск");
-        $("input.input__control[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.SHIFT,Keys.HOME));
-        $("input.input__control[placeholder='Дата встречи']").sendKeys(Keys.BACK_SPACE);;
+        $("input.input__control[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME));
+        $("input.input__control[placeholder='Дата встречи']").sendKeys(Keys.BACK_SPACE);
         $("input.input__control[placeholder='Дата встречи']").setValue(dateMeetin);
         $("input[name='name']").setValue("Валенков Алеша");
         $("input[name='phone']").setValue("+79008006600");
@@ -59,7 +46,6 @@ public class CardDeliveryTest {
         $(withText("Успешно!")).shouldBe(visible);
         $(byText("Встреча успешно забронирована на")).shouldBe(visible);
         $(byText(dateMeetin)).shouldBe(visible);
-
     }
 
 }
